@@ -1,5 +1,6 @@
 import {App} from "../../app/app";
 import ConsoleApp from "./ConsoleApp.svelte";
+import consoleIcon from "../../assets/consoleIcon.svg"
 
 export default class Console extends App {
 
@@ -8,6 +9,6 @@ export default class Console extends App {
     } as const
 
     constructor() {
-        super("Console", ConsoleApp)
+        super("Console", ConsoleApp, consoleIcon)
     }
 }

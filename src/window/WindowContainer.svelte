@@ -2,19 +2,20 @@
     import {Window} from "./window";
     import {getNewZIndex, getZIndex} from "./zIndex";
     import {onMount} from "svelte";
+    import WindowContent from "./WindowContent.svelte";
 
     export let window : Window
 
-    let { classes, title, icon, x, y, width, height, style, controlButtons } = window.stores
+    let { classes, title, icon, x, y, width, height, style, controlButtons, isVisible, zIndex } = window.stores
 
     let titlebar : HTMLDivElement
 
     let posRelativeToCursorX : number
     let posRelativeToCursorY : number
     let titlebarPressed : boolean = false
-    let zIndex : number
+
     onMount(() => {
-        zIndex = getNewZIndex()
+        window.zIndex = getNewZIndex()
     })
 
     $: notImportant = window.process.getImportantWindows().length != 0 && !window.important
@@ -22,7 +23,10 @@
     function makeActive() {
         // don't allow non-important windows to gain focus when an important window exists for that process
         if (notImportant) return
-        Window.activeWindowStore.set(window)
+        Window.activeWindow = window
+        if (window.zIndex <= getZIndex()) {
+            window.zIndex = getNewZIndex()
+        }
     }
 
     let { activeWindowStore } = Window
@@ -53,8 +57,8 @@
         posRelativeToCursorX = pageX - (box.left + body.scrollLeft - body.clientLeft)
         posRelativeToCursorY = pageY - (box.top + body.scrollTop - body.clientTop)
         titlebarPressed = true
-        if (zIndex <= getZIndex()) {
-            zIndex = getNewZIndex()
+        if (window.zIndex <= getZIndex()) {
+            window.zIndex = getNewZIndex()
         }
 
         if (e instanceof MouseEvent) {
@@ -65,6 +69,8 @@
 
         document.addEventListener('touchmove', (ev) => {onTitleBarMove(ev)}, {passive: false});
         document.addEventListener('touchend', (ev) => {onTitleBarUnpress(ev)}, {passive: false});
+
+        window.dragStart.trigger()
 
     }
 
@@ -81,6 +87,8 @@
 
         document.removeEventListener('touchmove', (ev) => {onTitleBarMove(ev)});
         document.removeEventListener('touchend', (ev) => {onTitleBarUnpress(ev)});
+
+        window.dragStop.trigger()
     }
 
     function onTitleBarMove(e: MouseEvent | TouchEvent) {
@@ -100,9 +108,11 @@
 
 </script>
 
-<div class="absolute border rounded-t-md rounded-sm border-gray-800 drop-shadow-md"
-     style="width: {$width}px; left: {$x}px; top: {$y}px; z-index: {zIndex}"
-     on:mousedown={makeActive}>
+<div class="absolute border rounded-t-md rounded-sm border-gray-800 drop-shadow-md window-spawn"
+     class:hidden={!$isVisible}
+     style="width: {$width}px; left: {$x}px; top: {$y}px; z-index: {$zIndex}"
+     bind:this={window.windowElement}
+     on:mousedown={() => makeActive()}>
     <div class="h-7 flex justify-between title-bar text-sm rounded-t-md rounded-sm select-none"
          style="width: {$width-2}px"
          bind:this={titlebar}
@@ -123,7 +133,7 @@
         <div class="flex items-center">
             <span class="pr-2.5 mb-1">
                 {#if ($controlButtons.minimize)}
-                    <span class="pr-1.5">_</span>
+                    <span class="pr-1.5" on:click={() => window.hide()}>_</span>
                 {/if}
 
                 {#if ($controlButtons.maximize)}
@@ -131,20 +141,18 @@
                 {/if}
 
                 {#if ($controlButtons.close)}
-                    <span on:mouseup={() => window.close()}>x</span>
+                    <span on:click={() => window.close()}>x</span>
                 {:else}
                     <span class="text-gray-500">x</span>
                 {/if}
             </span>
         </div>
     </div>
-    <div style="height: {window.height}px;{$style}" class={$classes}>
-        {#if (notImportant)}
-            <div style="height: {$height}px; width: {$width}px" class="absolute"></div>
-        {/if}
-        <svelte:component this={window.component} window={window} process={window.process} />
-    </div>
+
+    <WindowContent window={window} notImportant={notImportant} />
 </div>
+
+
 
 <style>
 

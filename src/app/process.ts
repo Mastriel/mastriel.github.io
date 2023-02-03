@@ -3,6 +3,8 @@ import {App} from "./app";
 import type {Type} from "../util/typeUtils";
 import {newPID} from "./pid";
 import {ErrorPopup} from "../apps/shared/error/ErrorPopup";
+import type {Writable} from "svelte/store";
+import {get, writable} from "svelte/store";
 
 
 export class Process<AppType extends App = App> {
@@ -10,6 +12,8 @@ export class Process<AppType extends App = App> {
     public readonly id: number
     public readonly app: AppType
     public mainWindow: Window
+
+    public lastActiveWindow: Window
 
     public readonly options: object
 
@@ -35,30 +39,36 @@ export class Process<AppType extends App = App> {
         for (const window of this.getWindows()) {
             window.close()
         }
-        Process.processes = Process.processes.filter(process => process != this)
+        Process.processesStore.update(
+            processes => processes.filter(
+                (it) => it != this
+            )
+        )
     }
 
-    public crash = (reason: string) => {
+    public crash = (reason: string, spawner?: Window) => {
         this.spawnWindow(new ErrorPopup(
             `Fatal Error`,
             `${this.app.name} has crashed:\n${reason}`,
+            spawner,
             true
         ))
     }
 
-    public error = (reason: string) => {
+    public error = (reason: string, spawner?: Window) => {
         this.spawnWindow(new ErrorPopup(
             `Error`,
             `An error has occurred in ${this.app.name}:\n${reason}\n\n\nhi`,
+            spawner,
             false
         ))
     }
 
 
-    private static processes: Process[] = []
+    public static processesStore: Writable<readonly Process[]> = writable([])
 
-    public static getProcesses = (): Process[] => {
-        return [...Process.processes]
+    public static getProcesses = (): readonly Process[] => {
+        return get(Process.processesStore)
     }
     public static spawn = <AppType extends App>(app: Type<AppType>, options?: object): Process<AppType> => {
         let appInstance = App.getAppByType(app)
@@ -66,8 +76,11 @@ export class Process<AppType extends App = App> {
         let finalOptions = Process.mergeOptions(options, app["defaultOptions"])
         let process = new Process(appInstance, newPID(), finalOptions)
 
+        Process.processesStore.update((it) => [...it, process])
+
         let window = new Window(300, 300, 400, 400, appInstance.mainWindow)
         process.mainWindow = Window.spawn(window, process)
+        process.lastActiveWindow = process.mainWindow
 
         return process
     }

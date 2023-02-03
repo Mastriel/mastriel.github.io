@@ -22,6 +22,10 @@
 
     Window.activeWindow = window
 
+    window.closeEvent.listen(() => {
+        Window.activeWindow = window.spawner
+    })
+
     const closeWindow = () => {
         window.close()
         Window.activeWindow = process.mainWindow

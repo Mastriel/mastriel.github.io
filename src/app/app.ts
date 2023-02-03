@@ -1,5 +1,6 @@
 import type {SvelteComponent} from "svelte";
 import type {Type} from "../util/typeUtils";
+import mastrielIcon from "../assets/mastrielIcon.svg"
 
 export abstract class App {
 
@@ -45,7 +46,8 @@ export abstract class App {
 
     protected constructor(
         public readonly name: string,
-        public readonly mainWindow: typeof SvelteComponent
+        public readonly mainWindow: typeof SvelteComponent,
+        public readonly icon: string = mastrielIcon,
     ) {
 
     }
