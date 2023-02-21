@@ -1,14 +1,14 @@
 import {App} from "../../app/app";
-import ConsoleApp from "./ConsoleApp.svelte";
+import DevToolsApp from "./DevToolsApp.svelte";
 import consoleIcon from "../../assets/consoleIcon.svg"
 
-export default class Console extends App {
+export default class DevTools extends App {
 
     public static readonly defaultOptions = {
         backgroundColor: <string> "#000000"
     } as const
 
     constructor() {
-        super("Console", ConsoleApp, consoleIcon)
+        super("Developer Console", DevToolsApp, consoleIcon)
     }
 }

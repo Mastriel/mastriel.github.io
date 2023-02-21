@@ -98,8 +98,10 @@
 
         let [pageX, pageY] = pageXY(e)
 
-        window.x = pageX - (posRelativeToCursorX ?? 0)
-        window.y = pageY - (posRelativeToCursorY ?? 0)
+        let x = pageX - (posRelativeToCursorX ?? 0)
+        let y = pageY - (posRelativeToCursorY ?? 0)
+        window.x = Math.max(0, x)
+        window.y = Math.max(0, y)
 
         e.preventDefault()
     }

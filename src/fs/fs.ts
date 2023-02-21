@@ -1,8 +1,5 @@
-import {OPFSFileSystem} from "./OPFSFileSystem";
 
 export type File = {
-    readonly path: readonly string[]
-    readonly name: string,
     readonly fullPath: string,
     readonly type: "folder" | "file"
 }
@@ -14,15 +11,11 @@ export type Folder = File & {
 export function file(absolutePath: String) : File {
     let p = absolutePath.replace("\\", "/")
     if (p.startsWith("/")) p = p.substring(1)
-    let path = p.split("/")//.filter((it) => it.length > 0)
-    console.log(path.join("/"))
-
-    let name = path[path.length-1]
+    if (p.endsWith("/")) p = p.substring(0, p.length-1)
+    let path = p.split("/")
 
     return {
-        path: path,
-        name: name,
-        fullPath: path.join("/"),
+        fullPath: "/" + path.join("/"),
         type: "file"
     }
 }
@@ -34,6 +27,22 @@ export function folder(absolutePath: String) : Folder {
         ...<Folder> fi,
         type: "folder"
     }
+}
+
+
+export function path(f: File) : string[] {
+    return f.fullPath.split("/").slice(1)
+}
+
+export function name(f: File) : string {
+    const p = path(f)
+    return p[p.length-1]
+}
+
+export function parent(f: Folder) : Folder {
+    let p = path(f)
+    p.pop()
+    return folder(p.join("/"))
 }
 
 

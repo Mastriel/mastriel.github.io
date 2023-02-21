@@ -9,7 +9,7 @@
 
 </script>
 
-<div style="height: {$height}px;{$style}" class={$classes}>
+<div style="height: {$height}px;{$style}" class={$classes} class:overflow-y-scroll={true} class:scrollbar-hide={true}>
     {#if (notImportant)}
         <div style="height: {$height}px; width: {$width}px" class="absolute"></div>
     {/if}

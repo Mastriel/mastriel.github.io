@@ -1,20 +1,20 @@
 <script lang="ts">
     import {Process} from "../../app/process";
     import {Window} from "../../window/window";
-    import Console from "./Console";
+    import DevTools from "./DevTools";
     import {onMount} from "svelte";
     import {randomElement, randomNumber} from "../../util/randomUtils";
     import consoleIcon from "../../assets/consoleIcon.svg"
-    import type {ConsoleOptions} from "./ConsoleOptions";
+    import type {DevToolsOptions} from "./DevToolsOptions";
     import {delay} from "../../util/asyncUtils";
     import Chatroom from "../chatroom/Chatroom";
     import {FileDialog} from "../shared/filedialog/FileDialog";
     import type {File} from "../../fs/fs"
     import {file, fs} from "../../fs/fs";
 
-    export let process: Process<Console>
+    export let process: Process<DevTools>
     export let window: Window
-    let options = <ConsoleOptions> process.options
+    let options = <DevToolsOptions> process.options
 
 
 
@@ -32,7 +32,7 @@
         console.log("Process killed!")
     }
     const spawnAnother = () => {
-        let process = Process.spawn(Console)
+        let process = Process.spawn(DevTools)
         console.log("New process spawned!")
         console.log(process)
         Window.activeWindow = process.mainWindow
@@ -71,10 +71,12 @@
     }
 
     let selectedFile : File
+    let fileContents : String
     const selectFile = async () => {
         let dialog = Window.spawn(new FileDialog(window, undefined), process)
 
         selectedFile = await dialog.getFile()
+        fileContents = await fs.readString(selectedFile)
     }
 
     const createFile = async () => {
@@ -91,7 +93,7 @@
     <span class="link" on:click={showUnrecoverableError}>Show unrecoverable error</span>
     <span class="link" on:click={turnInvisible}>Turn invisible temporarily</span>
     <span class="link" on:click={openChatroom}>Open Chatroom</span>
-    <span class="link" on:click={selectFile}>Select File (selected: {selectedFile?.fullPath ?? "none"})</span>
+    <span class="link" on:click={selectFile}>Select File (selected: {fileContents ?? "none"})</span>
     <span class="link" on:click={createFile}>Create example.txt</span>
 </div>
 
