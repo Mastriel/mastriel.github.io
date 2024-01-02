@@ -3,6 +3,7 @@
     import {getNewZIndex, getZIndex} from "./zIndex";
     import {onMount} from "svelte";
     import WindowContent from "./WindowContent.svelte";
+    import {isMobile} from "../util/mobileUtils";
 
     export let window : Window
 
@@ -46,6 +47,8 @@
     }
 
     function onTitleBarPress(e: MouseEvent | TouchEvent) {
+        if (isMobile()) return;
+
         if (notImportant) return
         if (e instanceof MouseEvent && e.button !== 0) return
 
@@ -75,6 +78,8 @@
     }
 
     function onTitleBarUnpress(e: MouseEvent | TouchEvent) {
+        if (isMobile()) return;
+
         if (e instanceof MouseEvent && e.button !== 0) return
         titlebarPressed = false
 
@@ -92,6 +97,7 @@
     }
 
     function onTitleBarMove(e: MouseEvent | TouchEvent) {
+        if (isMobile()) return;
         if (notImportant) return
 
         if (!titlebarPressed) return
@@ -116,24 +122,26 @@
      bind:this={window.windowElement}
      on:mousedown={() => makeActive()}>
     <div class="h-7 flex justify-between title-bar text-sm rounded-t-md rounded-sm select-none"
+         class:cursor-grab={!titlebarPressed}
+         class:cursor-grabbing={titlebarPressed}
          style="width: {$width-2}px"
          bind:this={titlebar}
          on:mousedown={onTitleBarPress}
          on:mouseup={onTitleBarUnpress}
          on:mousemove={onTitleBarMove}>
 
-        <div class="flex items-center">
+        <div class="flex items-center cursor-auto">
             {#if ($icon !== undefined && $icon.length !== 0)}
                 <img src={$icon} alt="{$title} icon" height={18} width={18} class="ml-1.5">
             {/if}
             {#if ($activeWindowStore === window)}
-                <span class="pl-2">{$title}</span>
+                <span class="pl-2 text-ellipsis whitespace-nowrap overflow-hidden">{$title}</span>
             {:else}
-                <span class="pl-2 text-gray-400">{$title}</span>
+                <span class="pl-2 text-gray-400 text-ellipsis whitespace-nowrap overflow-hidden">{$title}</span>
             {/if}
         </div>
-        <div class="flex items-center">
-            <span class="pr-2.5 mb-1">
+        <div class="flex items-center cursor-auto">
+            <div class="pr-2.5 mb-1 whitespace-nowrap">
                 {#if ($controlButtons.minimize)}
                     <span class="pr-1.5" on:click={() => window.hide()}>_</span>
                 {/if}
@@ -147,11 +155,11 @@
                 {:else}
                     <span class="text-gray-500">x</span>
                 {/if}
-            </span>
+            </div>
         </div>
     </div>
 
-    <WindowContent window={window} notImportant={notImportant} />
+    <WindowContent window={window} notImportant={notImportant}/>
 </div>
 
 

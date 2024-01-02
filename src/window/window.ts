@@ -6,6 +6,7 @@ import {WindowReactivity} from "./windowReactivity";
 import {WindowEventHandler} from "./windowEvents";
 import type {Fetchable} from "../util/writableUtils";
 import {fetchable} from "../util/writableUtils";
+import type {App} from "../app/app";
 
 export class Window extends WindowReactivity {
 
@@ -38,6 +39,7 @@ export class Window extends WindowReactivity {
         if (window.title == undefined) {
             window.title = window.process.app.name
         }
+        window.onSpawn.trigger()
         return window
     }
 
@@ -54,9 +56,15 @@ export class Window extends WindowReactivity {
         initialHeight: number,
         public readonly component: typeof SvelteComponent
     ) {
-        super(initialX, initialY, initialWidth, initialHeight)
+        let [x, y] = [initialX, initialY];
+        while (true) {
+            if (Window.windows.find((it) => it.x == x && it.y == y) == undefined) break
+            console.log("addition")
+            x += 24
+            y += 24
+        }
+        super(x, y, initialWidth, initialHeight)
     }
-
 
     private _process : Process | undefined = undefined
 
@@ -83,12 +91,18 @@ export class Window extends WindowReactivity {
     }
 
     public hide() { this.isVisible = false }
+
     public unhide() { this.isVisible = true }
 
-    public close() {
+    public close() : boolean {
+        const { cancelled } = this.closeRequest.trigger()
+        if (cancelled) {
+            return false
+        }
         this.playCloseAnimation()
 
         this.onPopInEnd(this.kill)
+        return true
     }
 
     private onPopInEnd = (fun: () => void) => {
@@ -125,9 +139,16 @@ export class Window extends WindowReactivity {
 
     public readonly onFocus = new WindowEventHandler(this)
     public readonly onUnfocus = new WindowEventHandler(this)
+
     /**
      * Triggered directly before this window is removed from {@link Window.windows}
      */
     public readonly closeEvent = new WindowEventHandler(this)
 
+    /**
+     * Triggered directly before this window is removed from {@link Window.windows}
+     */
+    public readonly closeRequest = new WindowEventHandler(this, { cancelled: false })
+
+    public readonly onSpawn = new WindowEventHandler(this)
 }

@@ -9,9 +9,6 @@
 
     window.icon = process.app.icon
 
-    window.width = 600
-    window.height = 600
-
     let dragging = false
     let iFrame : HTMLIFrameElement
     const disablePointer = () => { if (iFrame != undefined) iFrame.style.pointerEvents = "none" }

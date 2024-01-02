@@ -31,6 +31,10 @@ export class Process<AppType extends App = App> {
         return this.getWindows().filter((window) => window.important) ?? []
     }
 
+    public focus() {
+        Window.activeWindow = this.mainWindow;
+    }
+
     public spawnWindow = <T extends Window>(window: T): T => {
         return Window.spawn(window, this)
     }
@@ -78,9 +82,17 @@ export class Process<AppType extends App = App> {
 
         Process.processesStore.update((it) => [...it, process])
 
-        let window = new Window(300, 300, 400, 400, appInstance.mainWindow)
+        let window = appInstance.mainWindow()
+
+        window.x = (screen.width / 2) - (window.width / 2)
+        window.y = (screen.height / 2) - (window.height / 2) - 100
+
         process.mainWindow = Window.spawn(window, process)
         process.lastActiveWindow = process.mainWindow
+
+
+        console.log(window.height)
+
 
         return process
     }

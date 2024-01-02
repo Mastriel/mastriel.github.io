@@ -1,13 +1,12 @@
 
 <script lang="ts">
+    import {isMobile} from "../../util/mobileUtils";
+
     export let onClick : () => void | undefined = undefined
 </script>
 
-{#if (onClick != undefined)}
-    <p class="link" on:click={onClick}><slot/></p>
-{:else}
-    <p class="link disabled" on:click={onClick}><slot/></p>
-{/if}
+
+<p class="link" class:disabled={onClick === undefined} class:mobile={isMobile()} on:click={onClick}><slot/></p>
 <style>
     .link {
         @apply pt-2 text-center;
@@ -18,6 +17,10 @@
         font-size: 20px;
         text-align: center;
         min-width: 100%;
+    }
+
+    .link.mobile {
+        padding-top: calc(20%);
     }
 
     .link.disabled {

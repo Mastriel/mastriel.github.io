@@ -5,6 +5,6 @@ import ChatroomApp from "./ChatroomApp.svelte";
 export default class Chatroom extends App {
 
     constructor() {
-        super("Chatroom", ChatroomApp, chatroomIcon)
+        super("Chatroom", App.mainWindow(ChatroomApp, 600, 600), chatroomIcon)
     }
 }

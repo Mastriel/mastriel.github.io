@@ -6,7 +6,7 @@
     const originalValue = value
 
     const availableLetters =
-        "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=[];',./".split("")
+        "abcdefghijklmnopqrstuvwxyz1234567890".split("")
 
     let letters = originalValue.split("")
 
@@ -70,6 +70,7 @@
     }
 </script>
 
+<svelte:options tag="scramble-text"></svelte:options>
 
 
 

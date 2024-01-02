@@ -41,7 +41,6 @@ export class OPFSFileSystem implements FS {
     public readonly writeString = async (file: File, content: string) => {
         let handle = await this.root.getFileHandle(file.fullPath, { create: true })
         let f = await handle.getFile()
-        f
     }
 
     private constructor() {

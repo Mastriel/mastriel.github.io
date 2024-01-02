@@ -10,7 +10,7 @@ export function fetchable<T>(value: T | undefined = undefined) : Fetchable<T> {
     let store = writable<T>(value)
 
     let fetchable = {
-        cachedValue: <T | undefined> undefined,
+        cachedValue: <T | undefined> value,
         set(value: T) {
             fetchable.cachedValue = value
             store.set(value)

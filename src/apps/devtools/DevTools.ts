@@ -9,6 +9,6 @@ export default class DevTools extends App {
     } as const
 
     constructor() {
-        super("Developer Console", DevToolsApp, consoleIcon)
+        super("Developer Console", App.mainWindow(DevToolsApp, 350, 600), consoleIcon)
     }
 }

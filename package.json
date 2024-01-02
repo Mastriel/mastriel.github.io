@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/showdown": "^2.0.0",
     "autoprefixer": "^10.4.13",
     "gh-pages": "^4.0.0",
     "postcss": "^8.4.21",
@@ -24,6 +25,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "indexeddb-fs": "^1.2.5"
+    "indexeddb-fs": "^1.2.5",
+    "showdown": "^2.1.0"
   }
 }

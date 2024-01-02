@@ -5,11 +5,12 @@
     export let window : Window
     export let notImportant : boolean
 
-    let { style, classes, height, width } = window.stores
+    export let mobile : boolean = false
 
+    let { style, classes, height, width } = window.stores
 </script>
 
-<div style="height: {$height}px;{$style}" class={$classes} class:overflow-y-scroll={true} class:scrollbar-hide={true}>
+<div style="{mobile ? 'height: calc(var(--mvh) * 100 - 96px); width: 100vw;' : `height: ${$height}px;`} {$style}" class="overflow-y-scroll scrollbar-hide overflow-clip {$classes}">
     {#if (notImportant)}
         <div style="height: {$height}px; width: {$width}px" class="absolute"></div>
     {/if}

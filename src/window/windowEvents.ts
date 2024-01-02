@@ -21,9 +21,12 @@ export class WindowEventHandler<T extends object = {}> {
         }
     }
 
-    public readonly trigger = (opts: T = undefined) => {
+    public readonly trigger = (opts: T = undefined) : T => {
+        let options = opts ??  Object.assign({}, this.defaultOptions)
+
         this.listeners.forEach((listener) => {
-            listener(this.window, opts ?? this.defaultOptions)
+            listener(this.window, options)
         })
+        return options
     }
 }
