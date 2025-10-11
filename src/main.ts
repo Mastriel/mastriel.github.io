@@ -51,8 +51,7 @@ if (isMobile()) {
     window.addEventListener("scroll", preventMotion, false);
     document.addEventListener("touchmove", preventMotion, false);
 
-    function preventMotion(event: Event)
-    {
+    function preventMotion(event: Event) {
         event.preventDefault();
         event.stopPropagation();
     }

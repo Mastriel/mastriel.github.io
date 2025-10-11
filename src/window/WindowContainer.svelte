@@ -7,7 +7,7 @@
 
     export let window : Window
 
-    let { classes, title, icon, x, y, width, height, style, controlButtons, isVisible, zIndex } = window.stores
+    let { topClasses, classes, title, icon, x, y, width, height, style, controlButtons, isVisible, zIndex } = window.stores
 
     let titlebar : HTMLDivElement
 
@@ -116,7 +116,7 @@
 
 </script>
 
-<div class="absolute border rounded-t-md rounded-sm border-gray-800 drop-shadow-md window-spawn"
+<div class="absolute border rounded-t-md rounded-sm border-gray-800 drop-shadow-md window-spawn {$topClasses}"
      class:hidden={!$isVisible}
      style="width: {$width}px; left: {$x}px; top: {$y}px; z-index: {$zIndex}"
      bind:this={window.windowElement}

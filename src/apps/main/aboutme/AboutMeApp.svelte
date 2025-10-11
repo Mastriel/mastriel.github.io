@@ -13,6 +13,7 @@
 
     window.icon = process.app.icon
 
+    window.topClasses = "bg-blur-strong"
 
     window.classes = "about-me-app h-full"
 
@@ -33,7 +34,8 @@
 
 <div class="flex justify-center">
     <div>
-        <p class="pt-2 text-center text-gray-500 text-xs">software engineer</p>
+        <p class="pt-2 text-center text-gray-300 text-xs">he/they</p>
+        <p class="text-center text-gray-300 text-xs">software engineer</p>
     </div>
 </div>
 
@@ -114,8 +116,9 @@
     }
 
     :global(.about-me-app) {
-        background-color: var(--bg-color);
+        background-color: #1a1a1a99;
     }
+
 
     .title {
         background-image: linear-gradient(45deg, #9effc0, #51e4f8);

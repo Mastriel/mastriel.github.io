@@ -16,7 +16,10 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: var(--background-color);
+
+  background-image: url("/web-wallpaper.webp");
+  background-attachment: fixed;
+  background-size: cover;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -95,3 +98,12 @@ button:focus-visible {
 }
 
 
+
+.bg-blur-strong {
+  backdrop-filter: blur(12px);
+}
+
+
+.bg-blur-very-strong {
+  backdrop-filter: blur(24px);
+}

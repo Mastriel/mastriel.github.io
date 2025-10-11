@@ -14,7 +14,8 @@
 
     window.icon = process.app.icon
 
-    window.classes = "bg-gray-800"
+    window.topClasses = "bg-blur-very-strong"
+    window.classes = "welcome-app-bg"
 
     window.controlButtons = {
         close: false,
@@ -32,9 +33,9 @@
 
 <div class="bg-gray-800 border-b-gray-700 pt-2 pb-2 drop-shadow-2xl">
     <div class="h-center welcome-header">
-        <span class="grayed-out left text-4xl pt-4 pb-4 whitespace-nowrap"> --------[ </span>
-        <ScrambleText value="welcome"/>
-        <span class="grayed-out right text-4xl pt-4 pb-4 whitespace-nowrap"> ]-------- </span>
+        <span class="grayed-out left text-4xl pt-4 pb-4 whitespace-nowrap"> --------- </span>
+        <ScrambleText value="welcome!"/>
+        <span class="grayed-out right text-4xl pt-4 pb-4 whitespace-nowrap"> --------- </span>
     </div>
 </div>
 
@@ -46,7 +47,7 @@
     <div>
         <section class="text-center">
             <LinkOption onClick={() => Process.spawn(AboutMe).focus()}>about me</LinkOption>
-            <LinkOption>projects</LinkOption>
+            <LinkOption onClick={() => open("https://github.com/Mastriel", "_blank")}>projects</LinkOption>
             <LinkOption onClick={() => Process.spawn(Blog).focus()}>blog?</LinkOption>
             <LinkOption onClick={() => Process.spawn(Friends).focus()}>friends</LinkOption>
             <LinkOption>links</LinkOption>
@@ -79,6 +80,10 @@
     p {
         display: block;
         color: #ffffff;
+    }
+
+    :global(.welcome-app-bg) {
+        background-color: rgba(79, 54, 121, 0.6);
     }
 
 </style>

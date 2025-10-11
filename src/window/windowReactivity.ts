@@ -29,6 +29,9 @@ export abstract class WindowReactivity {
     public get classes() { return this.stores.classes.get() }
     public set classes(value) { this.stores.classes.set(value) }
 
+    public get topClasses() { return this.stores.topClasses.get() }
+    public set topClasses(value) { this.stores.topClasses.set(value) }
+
     public get style() { return this.stores.style.get() }
     public set style(value) { this.stores.style.set(value) }
 
@@ -64,6 +67,7 @@ export abstract class WindowReactivity {
 
 class WindowStores {
     public readonly classes = fetchable<string>("")
+    public readonly topClasses = fetchable<string>("")
     public readonly style = fetchable<string>("")
     public readonly title = fetchable<string>()
     public readonly icon = fetchable<string>()

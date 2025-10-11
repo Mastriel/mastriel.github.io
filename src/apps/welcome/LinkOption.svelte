@@ -5,18 +5,18 @@
     export let onClick : () => void | undefined = undefined
 </script>
 
-
 <p class="link" class:disabled={onClick === undefined} class:mobile={isMobile()} on:click={onClick}><slot/></p>
 <style>
     .link {
         @apply pt-2 text-center;
         transition: color 150ms ease;
         display: block;
-        color: #9ca3af;
+        color: #ced5e1;
         max-width: max-content;
         font-size: 20px;
         text-align: center;
         min-width: 100%;
+        text-shadow: #0f1512 1px 1px 2px;
     }
 
     .link.mobile {

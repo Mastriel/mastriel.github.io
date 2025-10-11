@@ -100,23 +100,16 @@
     .bg-taskbar {
         background-image: linear-gradient(
                 to right,
-                rgba(68, 82, 53, 0.4),
-                rgba(129, 121, 72, 0.4),
-                rgba(111, 138, 77, 0.4));
+                rgba(90, 60, 108, 0.4),
+                rgba(52, 36, 63, 0.4));
     }
 
     .bg-taskbar-blur {
-        backdrop-filter: blur(4px);
-
-        background-image: linear-gradient(
-                to right,
-                rgba(68, 82, 53, 0.4),
-                rgba(129, 121, 72, 0.4),
-                rgba(111, 138, 77, 0.4));
+        backdrop-filter: blur(12px);
     }
 
     .taskbar-contents {
         border-top: solid 2px;
-        border-color: rgb(129, 121, 72);
+        border-color: rgb(96, 62, 121);
     }
 </style>
