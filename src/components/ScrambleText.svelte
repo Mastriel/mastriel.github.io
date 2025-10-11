@@ -70,7 +70,7 @@
     }
 </script>
 
-<svelte:options tag="scramble-text"></svelte:options>
+<svelte:options customElement="scramble-text"></svelte:options>
 
 
 
