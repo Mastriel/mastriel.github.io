@@ -5,21 +5,25 @@
     import WindowContent from "./WindowContent.svelte";
     import {isMobile} from "../util/mobileUtils";
 
-    export let window : Window
+    interface Props {
+        window: Window;
+    }
+
+    let { window = $bindable() }: Props = $props();
 
     let { topClasses, classes, title, icon, x, y, width, height, style, controlButtons, isVisible, zIndex } = window.stores
 
-    let titlebar : HTMLDivElement
+    let titlebar : HTMLDivElement = $state()
 
     let posRelativeToCursorX : number
     let posRelativeToCursorY : number
-    let titlebarPressed : boolean = false
+    let titlebarPressed : boolean = $state(false)
 
     onMount(() => {
         window.zIndex = getNewZIndex()
     })
 
-    $: notImportant = window.process.getImportantWindows().length != 0 && !window.important
+    let notImportant = $derived(window.process.getImportantWindows().length != 0 && !window.important)
 
     function makeActive() {
         // don't allow non-important windows to gain focus when an important window exists for that process
@@ -116,19 +120,21 @@
 
 </script>
 
-<div class="absolute border rounded-t-md rounded-sm border-gray-800 drop-shadow-md window-spawn {$topClasses}"
+<div class="absolute border rounded-2xl overflow-clip border-gray-500 drop-shadow-md window-spawn {$topClasses}"
      class:hidden={!$isVisible}
      style="width: {$width}px; left: {$x}px; top: {$y}px; z-index: {$zIndex}"
      bind:this={window.windowElement}
-     on:mousedown={() => makeActive()}>
-    <div class="h-7 flex justify-between title-bar text-sm rounded-t-md rounded-sm select-none"
+     role="presentation"
+     onmousedown={() => makeActive()}>
+    <div class="h-7 flex justify-between title-bar text-sm select-none px-1"
          class:cursor-grab={!titlebarPressed}
          class:cursor-grabbing={titlebarPressed}
          style="width: {$width-2}px"
          bind:this={titlebar}
-         on:mousedown={onTitleBarPress}
-         on:mouseup={onTitleBarUnpress}
-         on:mousemove={onTitleBarMove}>
+         role="presentation"
+         onmousedown={onTitleBarPress}
+         onmouseup={onTitleBarUnpress}
+         onmousemove={onTitleBarMove}>
 
         <div class="flex items-center cursor-auto">
             {#if ($icon !== undefined && $icon.length !== 0)}
@@ -143,7 +149,7 @@
         <div class="flex items-center cursor-auto">
             <div class="pr-2.5 mb-1 whitespace-nowrap">
                 {#if ($controlButtons.minimize)}
-                    <span class="pr-1.5" on:click={() => window.hide()}>_</span>
+                    <span class="pr-1.5" role="button" tabindex="-1" onclick={() => window.hide()}>_</span>
                 {/if}
 
                 {#if ($controlButtons.maximize)}
@@ -151,7 +157,7 @@
                 {/if}
 
                 {#if ($controlButtons.close)}
-                    <span on:click={() => window.close()}>x</span>
+                    <span role="button" tabindex="-1" onclick={() => window.close()}>x</span>
                 {:else}
                     <span class="text-gray-500">x</span>
                 {/if}
@@ -167,8 +173,8 @@
 <style>
 
     .title-bar {
-        background-color: #151c1a;
-        border-bottom: 1px solid #212c29;
+        background-color: theme('colors.gray.800');
+        border-bottom: 1px solid theme('colors.gray.700');
     }
 
 </style>

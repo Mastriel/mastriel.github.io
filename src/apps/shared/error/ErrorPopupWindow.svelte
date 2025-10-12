@@ -5,8 +5,12 @@
     import {Window} from "../../../window/window"
     import {ErrorPopup} from "./ErrorPopup.js";
 
-    export let process: Process
-    export let window: ErrorPopup
+    interface Props {
+        process: Process;
+        window: ErrorPopup;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     let { width } = window.stores
 
@@ -44,9 +48,9 @@
 </div>
 <div class="flex justify-around pt-5">
     {#if (!window.unrecoverable)}
-        <button on:mousedown={closeWindow}>Continue</button>
+        <button onmousedown={closeWindow}>Continue</button>
     {/if}
-    <button on:mousedown={endProcess}>End Process</button>
+    <button onmousedown={endProcess}>End Process</button>
 </div>
 
 

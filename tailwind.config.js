@@ -1,8 +1,14 @@
+import colors from "tailwindcss/colors";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   plugins: [],
   theme: {
-    extend: {}
+      extend: {
+          colors: {
+              gray: colors.zinc,
+          }
+      }
   },
   purge: ["./index.html",'./src/**/*.{svelte,js,ts}'], // for unused CSS
   variants: {

@@ -15,8 +15,9 @@ import {isMobile} from "./util/mobileUtils";
 import {enableMvh} from "./util/vhUtils";
 import Timeline from "./apps/timeline/Timeline";
 import Friends from "./apps/friends/Friends";
+import { mount } from "svelte";
 
-const main = new Main({
+const main = mount(Main, {
     target: document.getElementById('app'),
 })
 

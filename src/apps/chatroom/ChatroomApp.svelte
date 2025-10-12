@@ -4,13 +4,17 @@
     import Chatroom from "./Chatroom";
     import {onMount} from "svelte";
 
-    export let process: Process<Chatroom>
-    export let window: Window
+    interface Props {
+        process: Process<Chatroom>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     window.icon = process.app.icon
 
     let dragging = false
-    let iFrame : HTMLIFrameElement
+    let iFrame : HTMLIFrameElement = $state()
     const disablePointer = () => { if (iFrame != undefined) iFrame.style.pointerEvents = "none" }
     const enablePointer = () => { if (iFrame != undefined) iFrame.style.pointerEvents = "" }
 

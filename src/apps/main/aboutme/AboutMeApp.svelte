@@ -8,25 +8,29 @@
     import {randomElement} from "../../../util/randomUtils";
     import {isMobile} from "../../../util/mobileUtils";
 
-    export let process: Process<AboutMe>
-    export let window: Window
+    interface Props {
+        process: Process<AboutMe>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     window.icon = process.app.icon
 
     window.topClasses = "bg-blur-strong"
 
-    window.classes = "about-me-app h-full"
+    window.classes = "about-me-app h-full select-text"
 
     const discordIconUrl = "https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg"
 
 </script>
 
 <h1 class="text-3xl text-center mt-10 pt-3 pb-3 font-bold text-black title">
-    hi, i'm <BouncingText value="Mastriel" duration={0.5} distancePx={2} offset={0.1} />!
+    hi, i'm <BouncingText value="Zac" duration={0.5} distancePx={2} offset={0.1} />!
 </h1>
 
 
-<div class="flex justify-center pt-10">
+<div class="flex justify-center pt-10 select-none">
     <div>
         <img src="/pfp.png" class="pfp" alt="my pfp!" width={164}>
     </div>
@@ -43,7 +47,7 @@
 
     <div class="flex justify-center">
         <div class="w-3/4">
-            <p class="text-center">hi, i program things and talk about <a href="https://store.steampowered.com/app/1150690/OMORI/" rel="noreferrer" target="_blank">OMORI</a>.</p>
+            <p class="text-center">i'm currently studying CS at NMSU.</p>
             <p class="text-center">kotlin, c#, and ts developer (in that order)</p>
             <br>
             <p class="text-center">i also like cooking, graphic design, and playing games with my friends.</p>
@@ -82,7 +86,7 @@
     }
 
     .footer {
-        background-color: #1e282c;
+        background-color: theme('colors.gray.800');
     }
 
     /*noinspection CssNonIntegerLengthInPixels*/

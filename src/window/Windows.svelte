@@ -6,7 +6,7 @@
     import WindowContainerMobile from "./WindowContainerMobile.svelte";
     let store = Window.windowsStore
 
-    $: windows = $store
+    let windows = $derived($store)
 
 </script>
 

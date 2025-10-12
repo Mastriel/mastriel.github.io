@@ -4,8 +4,12 @@
     import {Window} from "../../../window/window";
     import {Blog} from "./Blog";
 
-    export let process: Process<Blog>
-    export let window: Window
+    interface Props {
+        process: Process<Blog>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
 
     window.icon = process.app.icon

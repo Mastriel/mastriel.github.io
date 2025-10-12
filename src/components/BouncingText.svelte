@@ -1,12 +1,22 @@
 <script lang="ts">
-    export let value : string
 
-    export let className : string = ""
 
-    export let offset : number = 0.05
-    export let duration : number = 0.5
 
-    export let distancePx : number = 2
+    interface Props {
+        value: string;
+        className?: string;
+        offset?: number;
+        duration?: number;
+        distancePx?: number;
+    }
+
+    let {
+        value,
+        className = "",
+        offset = 0.05,
+        duration = 0.5,
+        distancePx = 2
+    }: Props = $props();
 </script>
 
 

@@ -4,8 +4,12 @@
     import {onMount} from "svelte";
     import type Friends from "./Friends";
 
-    export let process: Process<Friends>
-    export let window: Window
+    interface Props {
+        process: Process<Friends>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     window.classes = "bg-pink-200"
     window.icon = process.app.icon

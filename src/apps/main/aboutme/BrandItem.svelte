@@ -1,8 +1,17 @@
 <script lang="ts">
-    export let imageUrl : string
-    export let color : string
-    export let text : string
-    export let link : string | undefined = undefined
+    interface Props {
+        imageUrl: string;
+        color: string;
+        text: string;
+        link?: string | undefined;
+    }
+
+    let {
+        imageUrl,
+        color,
+        text,
+        link = undefined
+    }: Props = $props();
 
 </script>
 

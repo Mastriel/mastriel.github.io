@@ -4,11 +4,15 @@
     import {onMount} from "svelte";
     import WindowContent from "./WindowContent.svelte";
 
-    export let window : Window
+    interface Props {
+        window: Window;
+    }
+
+    let { window = $bindable() }: Props = $props();
 
     let { classes, title, icon, x, y, width, height, style, controlButtons, isVisible, zIndex } = window.stores
 
-    let titlebar : HTMLDivElement
+    let titlebar : HTMLDivElement = $state()
 
     let posRelativeToCursorX : number
     let posRelativeToCursorY : number
@@ -18,7 +22,7 @@
         window.zIndex = getNewZIndex()
     })
 
-    $: notImportant = window.process.getImportantWindows().length != 0 && !window.important
+    let notImportant = $derived(window.process.getImportantWindows().length != 0 && !window.important)
 
     function makeActive() {
         // don't allow non-important windows to gain focus when an important window exists for that process
@@ -37,7 +41,7 @@
      class:hidden={!$isVisible}
      style="z-index: {$zIndex}"
      bind:this={window.windowElement}
-     on:mousedown={() => makeActive()}>
+     onmousedown={() => makeActive()}>
     <div class="h-12 flex justify-between title-bar text-sm rounded-t-md rounded-sm select-none "
          bind:this={titlebar}>
 
@@ -54,7 +58,7 @@
         <div class="flex items-center">
             <div class="pr-2.5 mb-1 whitespace-nowrap">
                 {#if ($controlButtons.minimize)}
-                    <span class="pr-6" on:click={() => window.hide()}>_</span>
+                    <span class="pr-6" onclick={() => window.hide()}>_</span>
                 {/if}
 
                 {#if ($controlButtons.maximize)}
@@ -62,7 +66,7 @@
                 {/if}
 
                 {#if ($controlButtons.close)}
-                    <span on:click={() => window.close()} class="pr-4">x</span>
+                    <span onclick={() => window.close()} class="pr-4">x</span>
                 {:else}
                     <span class="text-gray-500 pr-4">x</span>
                 {/if}

@@ -9,12 +9,16 @@
     import AboutMe from "../main/aboutme/AboutMe";
     import Friends from "../friends/Friends";
 
-    export let process: Process<Welcome>
-    export let window: Window
+    interface Props {
+        process: Process<Welcome>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     window.icon = process.app.icon
 
-    window.topClasses = "bg-blur-very-strong"
+    window.topClasses = "bg-blur-very-strong bg-black/50"
     window.classes = "welcome-app-bg"
 
     window.controlButtons = {
@@ -23,59 +27,37 @@
         maximize: false
     }
 
-    let welcomeHovering : boolean = false
-
-    const onBlogClick = () => {
-        Process.spawn(Blog)
-    }
-
 </script>
 
-<div class="bg-gray-800 border-b-gray-700 pt-2 pb-2 drop-shadow-2xl">
-    <div class="h-center welcome-header">
-        <span class="grayed-out left text-4xl pt-4 pb-4 whitespace-nowrap"> --------- </span>
-        <ScrambleText value="welcome!"/>
-        <span class="grayed-out right text-4xl pt-4 pb-4 whitespace-nowrap"> --------- </span>
+<div class="flex flex-col h-full w-full">
+    <div class="bg-gray-800/50 border-b-gray-700 border-b pt-2 pb-2 drop-shadow-2xl">
+        <div class="h-center">
+            <ScrambleText class="font-bold text-xl" textValue="hello!!"/>
+        </div>
     </div>
-</div>
 
-<div class="h-center">
-    <hr class="w-full border-gray-700"/>
-</div>
-
-<div class="pt-6 options h-center">
-    <div>
-        <section class="text-center">
-            <LinkOption onClick={() => Process.spawn(AboutMe).focus()}>about me</LinkOption>
-            <LinkOption onClick={() => open("https://github.com/Mastriel", "_blank")}>projects</LinkOption>
-            <LinkOption onClick={() => Process.spawn(Blog).focus()}>blog?</LinkOption>
-            <LinkOption onClick={() => Process.spawn(Friends).focus()}>friends</LinkOption>
-            <LinkOption>links</LinkOption>
-        </section>
-
-        {#if isMobile()}
-            <section class="text-center pt-10 pb-10">
-                <p style="color:#999999;" class="text-sm">experience best on desktop!</p>
+    <div class="text-base mx-2 mt-2 h-full mb-2 rounded-[8px] border border-gray-600 h-center from-black/40 to-black/10 bg-gradient-to-b">
+        <div>
+            <section class="text-center">
+                <LinkOption onClick={() => Process.spawn(AboutMe).focus()}>about me</LinkOption>
+                <LinkOption href="https://github.com/Mastriel">projects</LinkOption>
+                <LinkOption onClick={() => Process.spawn(Blog).focus()}>blog</LinkOption>
+                <LinkOption href="mailto:zac@calathea.dev">contact</LinkOption>
+                <LinkOption>links</LinkOption>
             </section>
-        {/if}
+
+            {#if isMobile()}
+                <section class="text-center pt-10 pb-10">
+                    <p style="color:#999999;" class="text-sm">experience best on desktop!</p>
+                </section>
+            {/if}
+        </div>
     </div>
 </div>
+
+
 
 <style>
-
-    .grayed-out {
-        background-clip: text;
-        color: transparent;
-        transition-property: background-position;
-    }
-
-    .grayed-out.left {
-        background-image: linear-gradient(90deg, transparent, rgb(107, 114, 128));
-    }
-
-    .grayed-out.right {
-        background-image: linear-gradient(270deg, transparent, rgb(107, 114, 128));
-    }
 
     p {
         display: block;
@@ -83,7 +65,7 @@
     }
 
     :global(.welcome-app-bg) {
-        background-color: rgba(79, 54, 121, 0.6);
+        background-color: #52525b99;
     }
 
 </style>

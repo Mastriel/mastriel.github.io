@@ -9,8 +9,8 @@
     let activeWindow = Window.activeWindowStore
 
 
-    $: isActive = (process: Process) =>
-        $activeWindow?.process === process
+    let isActive = $derived((process: Process) =>
+        $activeWindow?.process === process)
 
     const toggleProcessVisibility = (process: Process) => {
         if (isActive(process)) {
@@ -62,7 +62,7 @@
     <div class="h-12 w-screen max-z-index taskbar-contents flex items-center justify-center gap-1">
         {#each $processes as process (process)}
             <div class="{isActive(process) ? 'selected' : 'unselected'} process"
-                 on:click={() => toggleProcessVisibility(process)}
+                 onclick={() => toggleProcessVisibility(process)}
                  animate:flip={{duration: 200}}>
 
                 <img src={process.app.icon} width="30" height="30" alt={`${process.app.name}`} class="translate-y-2.5"/>
@@ -98,10 +98,7 @@
     }
 
     .bg-taskbar {
-        background-image: linear-gradient(
-                to right,
-                rgba(90, 60, 108, 0.4),
-                rgba(52, 36, 63, 0.4));
+        @apply bg-gray-800/40
     }
 
     .bg-taskbar-blur {
@@ -110,6 +107,6 @@
 
     .taskbar-contents {
         border-top: solid 2px;
-        border-color: rgb(96, 62, 121);
+        border-color: rgb(47, 47, 47);
     }
 </style>

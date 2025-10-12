@@ -1,8 +1,8 @@
 import tailwind from 'tailwindcss'
-import tailwindConfig from './tailwind.config.cjs'
+import tailwindConfig from './tailwind.config.js'
 import autoprefixer from 'autoprefixer'
 
-module.exports = {
+export default {
   plugins: [
     tailwind(tailwindConfig),
     autoprefixer,

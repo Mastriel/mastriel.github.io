@@ -1,4 +1,4 @@
-import type {SvelteComponent} from "svelte";
+import type {Component, SvelteComponent} from "svelte";
 import type {Type} from "../util/typeUtils";
 import mastrielIcon from "../assets/mastrielIcon.svg"
 import {Window} from "../window/window";
@@ -55,7 +55,7 @@ export abstract class App {
 
 
     public static readonly mainWindow = (
-        component: typeof SvelteComponent,
+        component: Component,
         width: number,
         height: number,
         spawnCallback: EventFunction = undefined

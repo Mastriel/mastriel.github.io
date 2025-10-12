@@ -1,14 +1,16 @@
 <script lang="ts">
 
-    export let className : string = "text-4xl pt-4 pb-4 pl-2 pr-2"
-    export let value : string
+    interface Props {
+        class?: string;
+        textValue: string;
+    }
 
-    const originalValue = value
+    const { class: classes = "text-4xl pt-4 pb-4 pl-2 pr-2", textValue: value = $bindable() }: Props = $props();
 
     const availableLetters =
         "abcdefghijklmnopqrstuvwxyz1234567890!".split("")
 
-    let letters = originalValue.split("")
+    let letters = $state(value.split(""))
 
     let intervalId : number | undefined
     let timeoutId : number | undefined
@@ -24,7 +26,7 @@
     const resetLetters = () => {
         for (let [i, letter] of letters.entries()) {
             lettersResetIntervals[i] = window.setInterval(() => {
-                if (letters[i] == originalValue.split("")[i]) {
+                if (letters[i] == value.split("")[i]) {
                     window.clearInterval(lettersResetIntervals[i])
                     return
                 }
@@ -39,7 +41,7 @@
         cancelAllResetIntervals()
         intervalId = window.setInterval(() => {
             letterFunction(index)
-            value = letters.join("")
+            //value = letters.join("")
         }, 3)
         window.clearTimeout(timeoutId)
         timeoutId = undefined
@@ -68,15 +70,20 @@
 
         timeoutId = window.setTimeout(resetLetters, 2000)
     }
+
+    export {
+    	classes,
+    	value,
+    }
 </script>
 
 <svelte:options customElement="scramble-text"></svelte:options>
 
 
 
-<span class={className}>
+<span class={classes}>
     {#each letters as letter, i}
-            <span on:mouseenter={() => { onHover(i) }}
-                  on:mouseleave={onUnhover}>{letter}</span>
+            <span onmouseenter={() => { onHover(i) }}
+                  onmouseleave={onUnhover}>{letter}</span>
     {/each}
 </span>

@@ -9,12 +9,16 @@
     import folderIcon from "../../../assets/folderIcon.svg";
     import folderBackIcon from "../../../assets/folderBackIcon.svg";
 
-    export let process: Process
-    export let window: FileDialog
+    interface Props {
+        process: Process;
+        window: FileDialog;
+    }
 
-    let currentDirectory = "/"
+    let { process, window = $bindable() }: Props = $props();
 
-    $: files = fs.getFiles(folder(currentDirectory)).catch(console.error)
+    let currentDirectory = $state("/")
+
+    let files = $derived(fs.getFiles(folder(currentDirectory)).catch(console.error))
 
     window.classes = "bg-gray-900"
     window.title = "Select a File"
@@ -61,17 +65,17 @@
         currentDirectory = parent(folder(currentDirectory)).fullPath
     }
 
-    $: additionalSlash = () => {
+    let additionalSlash = $derived(() => {
         if (currentDirectory == "/") return ""
         return "/"
-    }
+    })
 </script>
 
 <div class="bg-gray-800 border-b border-b-gray-700 pt-2 pb-2 drop-shadow-xl">
     <div class="flex justify-between items-center">
         <span class="text-sm pl-5">{currentDirectory}{additionalSlash()}</span>
         <div class="flex pr-2">
-            <div on:click={goToParent} class="flex icon-button p-0.5">
+            <div onclick={goToParent} class="flex icon-button p-0.5">
                 <img src={folderBackIcon} alt="file icon" height={24} width={24}>
             </div>
         </div>
@@ -83,7 +87,7 @@
 {:then f}
     <div class="files-size overflow-y-scroll">
     {#each f as file, i (file.fullPath)}
-        <div class="flex flex-grow" class:odd={i % 2 === 0} on:click={() => selectFile(file)}>
+        <div class="flex flex-grow" class:odd={i % 2 === 0} onclick={() => selectFile(file)}>
             <img src={icon(file)} alt="file icon" height={18} width={18}>
             <span class="block pl-1" >{name(file)}</span>
         </div>

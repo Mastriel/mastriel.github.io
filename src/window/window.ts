@@ -1,5 +1,5 @@
 import type {Process} from "../app/process";
-import type {SvelteComponent} from "svelte";
+import type {Component, SvelteComponent} from "svelte";
 import type {Writable} from "svelte/store";
 import {get, writable} from "svelte/store";
 import {WindowReactivity} from "./windowReactivity";
@@ -54,7 +54,7 @@ export class Window extends WindowReactivity {
         initialY: number,
         initialWidth: number,
         initialHeight: number,
-        public readonly component: typeof SvelteComponent
+        public readonly component: Component
     ) {
         let [x, y] = [initialX, initialY];
         while (true) {

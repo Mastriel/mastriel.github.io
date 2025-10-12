@@ -5,8 +5,12 @@
     import {fly} from "svelte/transition";
     import {onMount} from "svelte";
 
-    export let process: Process<Timeline>
-    export let window: Window
+    interface Props {
+        process: Process<Timeline>;
+        window: Window;
+    }
+
+    let { process, window = $bindable() }: Props = $props();
 
     type TimelineEvent = {
         event: string,
@@ -76,11 +80,11 @@
 
     ]
 
-    let selectedEventIndex = 0
+    let selectedEventIndex = $state(0)
 
-    $: selectedEvent = events[selectedEventIndex]
-    $: fgColor = selectedEvent.foregroundColor
-    $: bgColor = selectedEvent.backgroundColor
+    let selectedEvent = $derived(events[selectedEventIndex])
+    let fgColor = $derived(selectedEvent.foregroundColor)
+    let bgColor = $derived(selectedEvent.backgroundColor)
 
     const numerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 
@@ -88,7 +92,7 @@
         window.title = "History of Copyright Law"
     })
 
-    let previousEventIndex = 0
+    let previousEventIndex = $state(0)
     const switchTo = (index: number) => {
         if (index == selectedEventIndex) return
 
@@ -100,18 +104,18 @@
         }, 50)
         console.log("switch!")
     }
-    let isClosing : boolean = false
+    let isClosing : boolean = $state(false)
     window.closeRequest.listen(() => isClosing = true)
 
-    $: flyIn = {y: previousEventIndex > selectedEventIndex ? -50 : 50, duration: 400}
-    $: flyOut = isClosing ? {duration: 0} : undefined
+    let flyIn = $derived({y: previousEventIndex > selectedEventIndex ? -50 : 50, duration: 400})
+    let flyOut = $derived(isClosing ? {duration: 0} : undefined)
 </script>
 
 <div class="w-full h-full" style="background-color:{bgColor}; color:{fgColor}">
     <div class="header flex justify-around pt-5 mr-40 ml-40 pb-4" style="--fgColor: {fgColor};color:{fgColor}">
         {#each numerals as numeral, i}
             {@const isActive = selectedEventIndex === i}
-            <p class="header" class:font-extrabold={isActive} class:text-xl={isActive} on:click={() => switchTo(i)}>{numeral}</p>
+            <p class="header" class:font-extrabold={isActive} class:text-xl={isActive} onclick={() => switchTo(i)}>{numeral}</p>
         {/each}
     </div>
     <div class="line" style="--fgColor: {fgColor}; height:1px;"></div>

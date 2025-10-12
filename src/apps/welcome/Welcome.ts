@@ -8,7 +8,7 @@ export class Welcome extends App {
 
     constructor() {
 
-        super("Welcome!", App.mainWindow(WelcomeApp, 600, 310, Welcome.onWindowSpawn), icon)
+        super("Welcome!", App.mainWindow(WelcomeApp, 300, 250, Welcome.onWindowSpawn), icon)
     }
 
     private static readonly onWindowSpawn = (window: Window) => {

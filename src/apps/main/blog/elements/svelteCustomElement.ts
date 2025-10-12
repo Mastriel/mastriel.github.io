@@ -1,5 +1,4 @@
-import type {SvelteComponent} from "svelte";
-import {attr} from "svelte/internal";
+import {mount, type SvelteComponent} from "svelte";
 
 export const svelteCustomElement = (component: typeof SvelteComponent) : CustomElementConstructor => {
     return class extends HTMLElement {
@@ -17,7 +16,7 @@ export const svelteCustomElement = (component: typeof SvelteComponent) : CustomE
             }
 
             // Instantiate the Svelte Component
-            this.element = new component({
+            this.element = mount(component, {
                 // Tell it that it lives in the shadow root
                 target: shadowRoot,
                 // Pass any props
